@@ -1,0 +1,88 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - start_workout
+
+
+entities:
+  - reps
+  - exercise
+
+forms:
+  start_workout_form:
+    required_slots:
+      - reps
+      - exercise
+
+slots:
+  reps:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: reps
+        value: reps
+      - type: from_text
+        conditions:
+          - active_loop: start_workout_form
+            requested_slot: reps
+
+  exercise:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: exercise
+        value: exercise
+      - type: from_text
+        conditions:
+          - active_loop: start_workout_form
+            requested_slot: exercise
+
+
+responses:
+  utter_greet:
+    - text: "Hey! wassup bestie"
+
+  utter_cheer_up:
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+    - text: "Did that help you?"
+
+  utter_happy:
+    - text: "uwu"
+
+  utter_goodbye:
+    - text: "Bye"
+
+  utter_iamabot:
+    - text: "I am your bestie and I have no idea about whatever the fuck that you just asked me to do."
+
+  utter_submit:
+    - text: Done bestie!
+
+  utter_ask_reps:
+    - text: "how many reps you wanna do again?"
+
+  utter_ask_exercise:
+    - text: "Im sorry, what exercise you wanna do?"
+
+
+actions:
+  - utter_slots_values
+  - validate_start_workout_form
+  - action_clear_slot_values
+  - action_start_workout
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

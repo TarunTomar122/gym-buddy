@@ -1,0 +1,30 @@
+version: "3.1"
+
+rules:
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Say 'I am a bot' anytime the user challenges
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - rule: Activate start workout form
+    steps:
+      - intent: start_workout
+      - action: start_workout_form
+      - active_loop: start_workout_form
+
+  - rule: Submit view start workout form
+    condition:
+      - active_loop: start_workout_form
+    steps:
+      - action: start_workout_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_start_workout
+      - action: action_clear_slot_values
+
